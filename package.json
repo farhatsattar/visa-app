@@ -1,0 +1,17 @@
+{
+  "name": "visa-adviser-workspace",
+  "private": true,
+  "description": "Run API + Next together so login/register proxy never hits a stopped Nest server.",
+  "scripts": {
+    "dev:api": "npm run start:dev --prefix visa-adviser-backend",
+    "dev:web": "npm run dev --prefix visa-adviser-frontend",
+    "dev": "concurrently -k -n api,web -c magenta,cyan \"npm run dev:api\" \"npm run dev:web\""
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.4",
+    "autoprefixer": "^10.5.0",
+    "concurrently": "^9.1.2",
+    "postcss": "^8.5.10",
+    "tailwindcss": "^4.2.4"
+  }
+}
