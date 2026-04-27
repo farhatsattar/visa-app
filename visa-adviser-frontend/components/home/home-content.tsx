@@ -30,6 +30,10 @@ const countryFlagCodes: Record<string, string> = {
   Italy: "it",
 };
 
+/** Local: `public/video/company-video.mp4` — ya full HTTPS URL (`.env.local` mein) */
+const COMPANY_VIDEO_SRC =
+  process.env.NEXT_PUBLIC_COMPANY_VIDEO_URL?.trim() || "/video/company-video.mp4";
+
 function LeaderAvatar({ src, name }: { src?: string; name: string }) {
   const [failed, setFailed] = useState(false);
   if (!src || failed) {
@@ -58,6 +62,7 @@ export function HomeContent() {
   const pathname = usePathname();
   const showcaseImages = ["/images/visa1.jfif", "/images/visa2.jfif", "/images/visa3.jfif"];
   const [activeShowcaseImage, setActiveShowcaseImage] = useState(0);
+  const [companyVideoError, setCompanyVideoError] = useState(false);
 
   useEffect(() => {
     if (pathname !== "/") return;
@@ -91,14 +96,23 @@ export function HomeContent() {
           viewport={{ once: true }}
           className="relative overflow-hidden rounded-3xl border border-slate-200 shadow-xl dark:border-slate-700"
         >
-          <video
-            className="absolute inset-0 h-full w-full object-cover"
-            src="/video/company-video.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
+          {companyVideoError ? (
+            <div
+              className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900"
+              aria-hidden
+            />
+          ) : (
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src={COMPANY_VIDEO_SRC}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              onError={() => setCompanyVideoError(true)}
+            />
+          )}
           <div className="absolute inset-0 bg-slate-950/55" />
           <div className="relative p-7 sm:p-8">
             <p className="inline-flex rounded-full bg-blue-500/20 px-4 py-1 text-xs font-semibold text-blue-100 ring-1 ring-blue-200/30">
@@ -144,15 +158,25 @@ export function HomeContent() {
         <SectionHeading id="videos" title="Video Briefing" subtitle="Company introduction and business opportunity overview." />
         <div className="grid gap-6 md:grid-cols-2">
           <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-            <video
-              className="aspect-video w-full object-cover"
-              src="/video/company-video.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              controls
-            />
+            {companyVideoError ? (
+              <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 bg-slate-200 px-4 py-8 text-center text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                <PlayCircle className="h-10 w-10 opacity-60" />
+                <p>Video file missing ya URL galat. Local file: public/video/company-video.mp4 yahan rakhain,</p>
+                <p>ya .env.local mein NEXT_PUBLIC_COMPANY_VIDEO_URL=https://... (direct mp4) set karein.</p>
+              </div>
+            ) : (
+              <video
+                className="aspect-video w-full object-cover"
+                src={COMPANY_VIDEO_SRC}
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls
+                preload="metadata"
+                onError={() => setCompanyVideoError(true)}
+              />
+            )}
           </div>
           <div className="relative aspect-video overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-amber-50 via-white to-blue-50 p-3 shadow-sm dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-blue-950/40">
             <motion.div
