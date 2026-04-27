@@ -11,7 +11,7 @@ async function seed() {
   const userModel = app.get<Model<User>>(getModelToken(User.name));
   const config = app.get(ConfigService);
   const adminEmail = (
-    config.get<string>('ADMIN_EMAIL', 'admin@visa.local') ?? 'admin@visa.local'
+    config.get<string>('ADMIN_EMAIL', 'worldwidevisaadviser.com@gmail.com') ?? 'admin@visa.local'
   )
     .toLowerCase()
     .trim();
@@ -20,7 +20,7 @@ async function seed() {
     await userModel.create({
       fullName: 'System Admin',
       email: adminEmail,
-      passwordHash: await bcrypt.hash('admin123', 10),
+      passwordHash: await bcrypt.hash('worlwide1990@', 10),
       referralCode: 'ADMIN01',
       role: 'ADMIN',
       isVerified: true,

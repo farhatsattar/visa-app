@@ -5,7 +5,7 @@ export const leaders: Array<{
   points: number;
   image?: string;
 }> = [
-  { name: "Ayesha Khan", rank: "Super Platinum", points: 248, image: "public/images/v1.jfif" },
+  { name: "Ayesha Khan", rank: "Super Platinum", points: 248, image: "/images/v1.jfif" },
   { name: "Zainab Tariq", rank: "Platinum", points: 180, image: "/images/v2.jfif" },
   { name: "Sara Malik", rank: "Gold", points: 96, image: "/images/v3.jfif" },
   { name: "Fatima Noor", rank: "Platinum", points: 142, image: "/images/v4.jfif" },

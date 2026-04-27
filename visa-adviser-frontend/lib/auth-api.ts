@@ -6,9 +6,22 @@ async function httpErrorMessage(
   fallback: string,
   url: string,
 ): Promise<string> {
-  const err = (await res.json().catch(() => ({}))) as { message?: unknown };
+  const err = (await res.json().catch(() => ({}))) as {
+    message?: unknown;
+    error?: unknown;
+  };
   if (typeof err.message === "string") {
     return err.message;
+  }
+  if (Array.isArray(err.message) && err.message.length > 0) {
+    const joined = err.message
+      .map((item) => (typeof item === "string" ? item : ""))
+      .filter(Boolean)
+      .join(", ");
+    if (joined) return joined;
+  }
+  if (typeof err.error === "string" && err.error.trim()) {
+    return err.error;
   }
   if (res.status === 401) {
     return "Unauthorized — sign out and sign in again. If this persists, the server JWT secret may have changed.";
