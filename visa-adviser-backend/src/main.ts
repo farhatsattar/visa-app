@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { GlobalHttpExceptionFilter } from './common/http-exception.filter';
 import helmet from 'helmet';
+import type { Request, Response } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +27,17 @@ async function bootstrap() {
   if (process.env.TRUST_PROXY === 'true') {
     expressApp.set('trust proxy', 1);
   }
+
+  // Keep root probes healthy (Render/edge/browsers may send GET/HEAD on "/").
+  expressApp.get('/', (_req: Request, res: Response) => {
+    res.status(200).json({ status: 'ok', service: 'visa-adviser-backend' });
+  });
+  expressApp.head('/', (_req: Request, res: Response) => {
+    res.sendStatus(200);
+  });
+  expressApp.get('/healthz', (_req: Request, res: Response) => {
+    res.status(200).json({ status: 'ok' });
+  });
 
   app.enableCors({
     // Local dev: allow any origin (Next proxy / various ports). Production: strict list.
