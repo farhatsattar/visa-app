@@ -17,6 +17,17 @@ export class UsersService {
     return this.userModel.findOne({ email: email.toLowerCase() });
   }
 
+  async syncAdminByEmail(
+    email: string,
+    payload: Pick<User, 'passwordHash' | 'role' | 'isVerified' | 'verifiedAt'>,
+  ) {
+    return this.userModel.findOneAndUpdate(
+      { email: email.toLowerCase() },
+      { $set: payload },
+      { new: true },
+    );
+  }
+
   findByReferralCode(referralCode: string) {
     const c = referralCode.trim().toUpperCase();
     return this.userModel.findOne({ referralCode: c });

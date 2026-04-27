@@ -11,7 +11,7 @@ async function seed() {
   const userModel = app.get<Model<User>>(getModelToken(User.name));
   const config = app.get(ConfigService);
   const adminEmail = (
-    config.get<string>('ADMIN_EMAIL', 'worldwidevisaadviser.com@gmail.com') ?? 'admin@visa.local'
+    config.get<string>('ADMIN_EMAIL', 'worldwidevisaadviser.com@gmail.com') ?? 'worldwidevisaadviser.com@gmail.com'
   )
     .toLowerCase()
     .trim();
