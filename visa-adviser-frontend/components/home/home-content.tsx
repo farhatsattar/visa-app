@@ -60,7 +60,7 @@ function LeaderAvatar({ src, name }: { src?: string; name: string }) {
 
 export function HomeContent() {
   const pathname = usePathname();
-  const showcaseImages = ["public/images/visa1.jfif", "public/images/visa2.jfif", "public/images/visa3.jfif"];
+  const showcaseImages = ["/images/visa1.jfif", "/images/visa2.jfif", "/images/visa3.jfif"];
   const [activeShowcaseImage, setActiveShowcaseImage] = useState(0);
   const [companyVideoError, setCompanyVideoError] = useState(false);
 

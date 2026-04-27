@@ -6,15 +6,15 @@ export const leaders: Array<{
   image?: string;
 }> = [
   { name: "Ayesha Khan", rank: "Super Platinum", points: 248, image: "public/images/v1.jfif" },
-  { name: "Zainab Tariq", rank: "Platinum", points: 180, image: "public/images/v2.jfif" },
-  { name: "Sara Malik", rank: "Gold", points: 96, image: "public/images/v3.jfif" },
-  { name: "Fatima Noor", rank: "Platinum", points: 142, image: "public/images/v4.jfif" },
-  { name: "Hira Sohail", rank: "Super Platinum", points: 260, image: "public/images/v5.jfif" },
-  { name: "Usman Tariq", rank: "Platinum", points: 165, image: "public/images/v6.jfif" },
-  { name: "Saad Malik", rank: "Gold", points: 88, image: "public/images/v7.jfif" },
-  { name: "Bilal Ahmed", rank: "Classic", points: 42, image: "public/images/v8.jfif" },
-  { name: "Hamza Ali", rank: "Platinum", points: 121, image: "public/images/v9.jfif" },
-  { name: "Muneeb Shah", rank: "Gold", points: 76, image: "public/images/v10.jfif" },
+  { name: "Zainab Tariq", rank: "Platinum", points: 180, image: "/images/v2.jfif" },
+  { name: "Sara Malik", rank: "Gold", points: 96, image: "/images/v3.jfif" },
+  { name: "Fatima Noor", rank: "Platinum", points: 142, image: "/images/v4.jfif" },
+  { name: "Hira Sohail", rank: "Super Platinum", points: 260, image: "/images/v5.jfif" },
+  { name: "Usman Tariq", rank: "Platinum", points: 165, image: "/images/v6.jfif" },
+  { name: "Saad Malik", rank: "Gold", points: 88, image: "/images/v7.jfif" },
+  { name: "Bilal Ahmed", rank: "Classic", points: 42, image: "/images/v8.jfif" },
+  { name: "Hamza Ali", rank: "Platinum", points: 121, image: "/images/v9.jfif" },
+  { name: "Muneeb Shah", rank: "Gold", points: 76, image: "/images/v10.jfif" },
 ];
 
 export const services = [
