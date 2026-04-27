@@ -43,6 +43,7 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(new GlobalHttpExceptionFilter());
+  app.setGlobalPrefix('api');
   const enableSwagger =
     !isProd || process.env.ENABLE_SWAGGER_IN_PROD === 'true';
 
