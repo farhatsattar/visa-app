@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import {
@@ -46,12 +45,13 @@ function LeaderAvatar({ src, name }: { src?: string; name: string }) {
   }
   return (
     <div className="relative mx-auto h-16 w-16 overflow-hidden rounded-full ring-2 ring-slate-200 dark:ring-slate-600">
-      <Image
+      <img
         src={src}
         alt={`${name} — top leader`}
-        fill
-        className="object-cover"
-        sizes="64px"
+        className="h-full w-full object-cover"
+        width={64}
+        height={64}
+        loading="lazy"
         onError={() => setFailed(true)}
       />
     </div>
@@ -60,7 +60,7 @@ function LeaderAvatar({ src, name }: { src?: string; name: string }) {
 
 export function HomeContent() {
   const pathname = usePathname();
-  const showcaseImages = ["/images/visa1.jfif", "/images/visa2.jfif", "/images/visa3.jfif"];
+  const showcaseImages = ["public/images/visa1.jfif", "public/images/visa2.jfif", "public/images/visa3.jfif"];
   const [activeShowcaseImage, setActiveShowcaseImage] = useState(0);
   const [companyVideoError, setCompanyVideoError] = useState(false);
 
@@ -187,12 +187,12 @@ export function HomeContent() {
               transition={{ duration: 0.45, ease: "easeOut" }}
               className="relative h-full w-full"
             >
-              <Image
+              <img
                 src={showcaseImages[activeShowcaseImage]}
                 alt={`Visa guidance preview ${activeShowcaseImage + 1}`}
-                fill
-                className="rounded-xl object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
+                className="h-full w-full rounded-xl object-cover"
+                width={1200}
+                height={675}
                 loading="eager"
               />
             </motion.div>
