@@ -130,12 +130,9 @@ export class UsersService {
 
   listTopRated(limit = 10) {
     return this.userModel
-      .find({
-        isVerified: true,
-        $or: [{ activePoints: { $gt: 0 } }, { pendingPoints: { $gt: 0 } }],
-      })
-      .select('fullName rank activePoints pendingPoints')
-      .sort({ activePoints: -1, pendingPoints: -1, createdAt: 1 })
+      .find({ isVerified: true, activePoints: { $gt: 0 } })
+      .select('fullName rank activePoints')
+      .sort({ activePoints: -1, createdAt: 1 })
       .limit(limit)
       .lean();
   }

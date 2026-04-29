@@ -97,8 +97,7 @@ export function HomeContent() {
         const rows = await fetchTopRatedUsers();
         if (!cancelled) {
           const sorted = [...rows].sort(
-            (a, b) =>
-              b.activePoints + (b.pendingPoints ?? 0) - (a.activePoints + (a.pendingPoints ?? 0)),
+            (a, b) => b.activePoints - a.activePoints,
           );
           setTopRatedUsers(sorted);
         }
@@ -248,26 +247,53 @@ export function HomeContent() {
           title="Top 10 Rated Leaders"
           subtitle="Admin verified users with highest active referral points."
         />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {topRatedUsers.map((leader) => (
-            <div
-              key={leader._id}
-              className="relative rounded-2xl border border-slate-200 bg-white p-4 text-center text-slate-900 shadow-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
-            >
-              <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
-                <CheckCircle2 className="h-3.5 w-3.5" />
-                Verified
-              </span>
-              <LeaderAvatar name={leader.fullName} />
-              <h4 className="mt-3 text-sm font-semibold text-slate-900 dark:text-white">{leader.fullName}</h4>
-              <p className="text-xs text-amber-700 dark:text-amber-300">{leader.rank}</p>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                {leader.activePoints + (leader.pendingPoints ?? 0)} referral points
-              </p>
-            </div>
-          ))}
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+          {topRatedUsers.length > 0
+            ? topRatedUsers.map((leader, index) => (
+                <div
+                  key={leader._id}
+                  className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-4 text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-600 dark:from-slate-800 dark:to-slate-900 dark:text-slate-100"
+                >
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-500" />
+                  <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    Verified
+                  </span>
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-blue-100 px-2 text-xs font-bold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                      #{index + 1}
+                    </span>
+                  </div>
+
+                  <div className="mt-3 text-center">
+                    <LeaderAvatar name={leader.fullName} />
+                    <h4 className="line-clamp-2 text-sm font-semibold text-slate-900 dark:text-white">
+                      {leader.fullName}
+                    </h4>
+                  </div>
+
+                  <div className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-center dark:bg-amber-500/10">
+                    <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-400">Rank</p>
+                    <p className="mt-1 text-xs font-semibold text-amber-700 dark:text-amber-300">{leader.rank}</p>
+                  </div>
+
+                  <div className="mt-3 rounded-xl bg-slate-100 px-3 py-2 text-center dark:bg-slate-700/40">
+                    <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-400">Points</p>
+                    <p className="mt-1 text-base font-bold text-slate-800 dark:text-slate-100">{leader.activePoints}</p>
+                  </div>
+                </div>
+              ))
+            : Array.from({ length: 5 }).map((_, idx) => (
+                <div
+                  key={`placeholder-${idx}`}
+                  className="rounded-2xl border border-slate-300 bg-slate-50 p-4 text-center text-slate-500 dark:border-slate-600 dark:bg-slate-900/40 dark:text-slate-400"
+                >
+                  <LeaderAvatar name={`Placeholder ${idx + 1}`} />
+                  <p className="text-sm font-semibold">No leader yet</p>
+                  <p className="mt-2 text-xs">Verified active-point users will appear here</p>
+                </div>
+              ))}
         </div>
-        {topRatedUsers.length === 0 && null}
       </section>
 
       <section id="about" className="container-shell py-12">
