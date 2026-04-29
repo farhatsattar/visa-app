@@ -102,7 +102,7 @@ export function HomeContent() {
           setTopRatedUsers(sorted);
         }
       } catch {
-        if (!cancelled) setTopRatedUsers([]);
+        // Keep last successful list so cards do not disappear on transient API failure.
       }
     };
 
