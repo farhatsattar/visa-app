@@ -133,6 +133,7 @@ export type TopRatedUser = {
   fullName: string;
   rank: string;
   activePoints: number;
+  pendingPoints?: number;
 };
 
 export async function fetchDashboard(

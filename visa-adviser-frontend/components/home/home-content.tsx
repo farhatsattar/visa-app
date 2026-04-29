@@ -95,7 +95,13 @@ export function HomeContent() {
     const loadTopRated = async () => {
       try {
         const rows = await fetchTopRatedUsers();
-        if (!cancelled) setTopRatedUsers(rows);
+        if (!cancelled) {
+          const sorted = [...rows].sort(
+            (a, b) =>
+              b.activePoints + (b.pendingPoints ?? 0) - (a.activePoints + (a.pendingPoints ?? 0)),
+          );
+          setTopRatedUsers(sorted);
+        }
       } catch {
         if (!cancelled) setTopRatedUsers([]);
       }
@@ -104,7 +110,7 @@ export function HomeContent() {
     void loadTopRated();
     const intervalId = window.setInterval(() => {
       void loadTopRated();
-    }, 12000);
+    }, 4000);
 
     return () => {
       cancelled = true;
@@ -239,19 +245,25 @@ export function HomeContent() {
       <section className="container-shell py-12">
         <SectionHeading
           id="leaders"
-          title="Top Rated Leaders"
-          subtitle="Live ranking based on verified active referral points."
+          title="Top 10 Rated Leaders"
+          subtitle="Admin verified users with highest active referral points."
         />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {topRatedUsers.map((leader) => (
             <div
               key={leader._id}
-              className="rounded-2xl border border-slate-200 bg-white p-4 text-center text-slate-900 shadow-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+              className="relative rounded-2xl border border-slate-200 bg-white p-4 text-center text-slate-900 shadow-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
             >
+              <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                <CheckCircle2 className="h-3.5 w-3.5" />
+                Verified
+              </span>
               <LeaderAvatar name={leader.fullName} />
               <h4 className="mt-3 text-sm font-semibold text-slate-900 dark:text-white">{leader.fullName}</h4>
               <p className="text-xs text-amber-700 dark:text-amber-300">{leader.rank}</p>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{leader.activePoints} referral points</p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                {leader.activePoints + (leader.pendingPoints ?? 0)} referral points
+              </p>
             </div>
           ))}
         </div>

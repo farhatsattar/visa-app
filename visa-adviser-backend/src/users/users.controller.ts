@@ -18,6 +18,6 @@ export class UsersController {
 
   @Get('top-rated')
   getTopRated() {
-    return this.usersService.listTopRated();
+    return this.usersService.listTopRated(10);
   }
 }
