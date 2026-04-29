@@ -17,8 +17,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { SectionHeading } from "../common/section-heading";
-import { benefits, countries, leaders, rewardMilestones, services } from "@/data/mock-data";
+import { benefits, countries, rewardMilestones, services } from "@/data/mock-data";
 import { CUSTOMER_RANK_INFO } from "@/lib/rank-briefs";
+import { fetchTopRatedUsers, type TopRatedUser } from "@/lib/auth-api";
 
 const countryFlagCodes: Record<string, string> = {
   UK: "gb",
@@ -63,6 +64,7 @@ export function HomeContent() {
   const showcaseImages = ["/images/visa1.jfif", "/images/visa2.jfif", "/images/visa3.jfif"];
   const [activeShowcaseImage, setActiveShowcaseImage] = useState(0);
   const [companyVideoError, setCompanyVideoError] = useState(false);
+  const [topRatedUsers, setTopRatedUsers] = useState<TopRatedUser[]>([]);
 
   useEffect(() => {
     if (pathname !== "/") return;
@@ -86,6 +88,29 @@ export function HomeContent() {
 
     return () => window.clearInterval(timer);
   }, [showcaseImages.length]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadTopRated = async () => {
+      try {
+        const rows = await fetchTopRatedUsers();
+        if (!cancelled) setTopRatedUsers(rows);
+      } catch {
+        if (!cancelled) setTopRatedUsers([]);
+      }
+    };
+
+    void loadTopRated();
+    const intervalId = window.setInterval(() => {
+      void loadTopRated();
+    }, 12000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <main>
@@ -214,22 +239,23 @@ export function HomeContent() {
       <section className="container-shell py-12">
         <SectionHeading
           id="leaders"
-          title="Top 10 Leaders"
-          subtitle="Recognized members with strong rank progression and referral performance."
+          title="Top Rated Leaders"
+          subtitle="Live ranking based on verified active referral points."
         />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {leaders.map((leader) => (
+          {topRatedUsers.map((leader) => (
             <div
-              key={leader.name}
+              key={leader._id}
               className="rounded-2xl border border-slate-200 bg-white p-4 text-center text-slate-900 shadow-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
             >
-              <LeaderAvatar src={leader.image} name={leader.name} />
-              <h4 className="mt-3 text-sm font-semibold text-slate-900 dark:text-white">{leader.name}</h4>
+              <LeaderAvatar name={leader.fullName} />
+              <h4 className="mt-3 text-sm font-semibold text-slate-900 dark:text-white">{leader.fullName}</h4>
               <p className="text-xs text-amber-700 dark:text-amber-300">{leader.rank}</p>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{leader.points} referral points</p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{leader.activePoints} referral points</p>
             </div>
           ))}
         </div>
+        {topRatedUsers.length === 0 && null}
       </section>
 
       <section id="about" className="container-shell py-12">

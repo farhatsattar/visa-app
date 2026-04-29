@@ -128,6 +128,13 @@ export type DashboardResponse = {
   }>;
 };
 
+export type TopRatedUser = {
+  _id: string;
+  fullName: string;
+  rank: string;
+  activePoints: number;
+};
+
 export async function fetchDashboard(
   accessToken: string
 ): Promise<DashboardResponse> {
@@ -148,6 +155,20 @@ export async function fetchDashboard(
     );
   }
   return res.json() as Promise<DashboardResponse>;
+}
+
+export async function fetchTopRatedUsers(): Promise<TopRatedUser[]> {
+  const url = getApiV1Path("/users/top-rated");
+  let res: Response;
+  try {
+    res = await fetch(url, { cache: "no-store" });
+  } catch (e) {
+    throw new Error(networkErrorMessage(e, url));
+  }
+  if (!res.ok) {
+    throw new Error(await httpErrorMessage(res, "Failed to load top rated users", url));
+  }
+  return res.json() as Promise<TopRatedUser[]>;
 }
 
 export type AdminUserRow = {

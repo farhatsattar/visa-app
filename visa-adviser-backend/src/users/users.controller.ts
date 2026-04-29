@@ -15,4 +15,9 @@ export class UsersController {
   getMyDashboard(@CurrentUser() user: { sub: string }) {
     return this.usersService.getDashboard(user.sub);
   }
+
+  @Get('top-rated')
+  getTopRated() {
+    return this.usersService.listTopRated();
+  }
 }

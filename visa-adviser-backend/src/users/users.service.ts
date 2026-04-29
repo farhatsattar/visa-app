@@ -127,4 +127,12 @@ export class UsersService {
       .select('-passwordHash')
       .sort({ createdAt: -1 });
   }
+
+  listTopRated() {
+    return this.userModel
+      .find({ isVerified: true, activePoints: { $gt: 0 } })
+      .select('fullName rank activePoints')
+      .sort({ activePoints: -1, createdAt: 1 })
+      .lean();
+  }
 }
