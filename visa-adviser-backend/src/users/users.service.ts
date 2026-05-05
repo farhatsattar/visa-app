@@ -24,7 +24,7 @@ export class UsersService {
     return this.userModel.findOneAndUpdate(
       { email: email.toLowerCase() },
       { $set: payload },
-      { new: true },
+      { returnDocument: 'after' },
     );
   }
 
@@ -50,7 +50,7 @@ export class UsersService {
       .findByIdAndUpdate(
         userId,
         { isVerified: true, verifiedAt: new Date() },
-        { new: true },
+        { returnDocument: 'after' },
       )
       .select('-passwordHash')
       .lean();

@@ -10,7 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const allowedOrigins = (
     process.env.CORS_ORIGINS ??
-    'https://worldwidevisaadviser-com,https://worldwidevisaadviser-com-429410.hostingersite.com,http://localhost:3000,https://worldwidevisaadviser-two.vercel.app/'
+    'http://localhost:3000,https://worldwidevisaadviser-two.vercel.app/'
   )
     .split(',')
     .map((origin) => origin.trim())
