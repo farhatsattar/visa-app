@@ -10,7 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const allowedOrigins = (
     process.env.CORS_ORIGINS ??
-    'http://localhost:3000,https://worldwidevisaadviser-two.vercel.app/'
+    'https://worldwidevisaadviser-com,https://worldwidevisaadviser-com-429410.hostingersite.com,http://localhost:3000,https://worldwidevisaadviser-two.vercel.app/'
   )
     .split(',')
     .map((origin) => origin.trim())
@@ -37,6 +37,10 @@ async function bootstrap() {
   });
   expressApp.get('/healthz', (_req: Request, res: Response) => {
     res.status(200).json({ status: 'ok' });
+  });
+  // Browsers request /favicon.ico on the API origin; avoid noisy 404 in logs.
+  expressApp.get('/favicon.ico', (_req: Request, res: Response) => {
+    res.status(204).end();
   });
 
   app.enableCors({
